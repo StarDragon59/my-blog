@@ -1,0 +1,19 @@
+json
+[
+  {
+    "id": 1,
+    "date": "2024-05-20",
+    "title": "Моя первая запись",
+    "image": "images/post1.jpg", 
+    "summary": "Начал учить HTML и CSS.",
+    "content": "Текст первой статьи..."
+  },
+  {
+    "id": 2,
+    "date": "2024-05-21",
+    "title": "Зачем мне нужен JSON?",
+    "image": "https://picsum.photos",
+    "summary": "Разбираюсь с данными.",
+    "content": "JSON — это удобно..."
+  }
+]
