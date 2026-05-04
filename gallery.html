@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Моя личная галерея</title>
+    <style>
+        /* Простые и понятные стили для галереи */
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .upload-area {
+            border: 2px dashed #3498db;
+            background: #fff;
+            padding: 30px;
+            text-align: center;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 30px;
+        }
+        .upload-area:hover {
+            background: #eef5ff;
+            border-color: #2980b9;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        button.delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        h1 { text-align: center; color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <h1>📸 Моя галерея</h1>
+    
+    <!-- Зона для загрузки -->
+    <div class="upload-area" id="dropArea">
+        <p>✨ Нажми сюда или перетащи картинку ✨</p>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+    </div>
+
+    <!-- Тут будут жить картинки -->
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        // 1. Находим все нужные элементы на странице
+const gallery = document.getElementById('gallery');
+const fileInput = document.getElementById('fileInput');
+const dropArea = document.getElementById('dropArea');
+
+// 2. Включаем хранилище: достаем старые картинки или создаем новую пустую папку
+let imagesArray = JSON.parse(localStorage.getItem('myGallery')) || [];
+
+// 3. Функция, которая рисует галерею на экране
+function renderGallery() {
+    gallery.innerHTML = ''; // Очищаем экран перед отрисовкой
+
+    if (imagesArray.length === 0) {
+        gallery.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Пока здесь пусто, загрузи первую картинку!</p>';
+        return;
+    }
+
+    imagesArray.forEach((imageDataUrl, index) => {
+        // Создаем контейнер для картинки
+        const card = document.createElement('div');
+        card.classList.add('card');
+        
+        // Вставляем саму картинку
+        const img = document.createElement('img');
+        img.src = imageDataUrl;
+        img.alt = `Фото ${index + 1}`;
+        
+        // Создаем кнопку удаления
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Удалить';
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.onclick = () => deleteImage(index); // При нажатии удаляем эту картинку
+        
+        card.appendChild(img);
+        card.appendChild(deleteBtn);
+        gallery.appendChild(card);
+    });
+}
+
+// 4. Функция для сохранения галереи в памяти браузера
+function saveGallery() {
+    localStorage.setItem('myGallery', JSON.stringify(imagesArray));
+    renderGallery(); // Перерисовываем экран
+}
+
+// 5. Функция для удаления картинки
+function deleteImage(index) {
+    imagesArray.splice(index, 1); // Удаляем 1 элемент по индексу
+    saveGallery(); // Сохраняем изменения
+}
+
+// 6. Функция, которая обрабатывает загрузку новых файлов
+function handleFiles(files) {
+    Array.from(files).forEach(file => {
+        // Проверяем, что это точно картинка (небольшая защита)
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+            // Когда картинка "прочитана", добавляем её в массив
+            imagesArray.push(event.target.result);
+            saveGallery(); // Сохраняем всю галерею
+        };
+        
+        reader.readAsDataURL(file); // Начинаем чтение файла
+    });
+}
+
+// 7. Навешиваем обработчики событий (слушатели)
+// Клик по области загрузки
+dropArea.addEventListener('click', () => fileInput.click());
+
+// Выбор файла через окно выбора
+fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+// Drag-and-drop: чтобы было совсем как в крутых сервисах
+dropArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropArea.style.background = '#eef5ff';
+});
+
+dropArea.addEventListener('dragleave', () => {
+    dropArea.style.background = '#fff';
+});
+
+dropArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropArea.style.background = '#fff';
+    handleFiles(e.dataTransfer.files);
+});
+
+// 8. При загрузке страницы показываем то, что уже есть в localStorage
+renderGallery();
+    </script>
+</body>
+</html>
