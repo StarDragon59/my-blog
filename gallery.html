@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Моя личная галерея</title>
-      <nav>
-    <a href="index.html">Главная</a>
-    <a href="about.html">Об авторе</a>
-    <a href="gallery.html">📸 Галерея</a>
-</nav>
     <style>
         /* Простые и понятные стили для галереи */
         body {
@@ -17,6 +12,32 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+        
+        /* ===== НОВЫЕ СТИЛИ ДЛЯ НАВИГАЦИИ ===== */
+        nav {
+            text-align: center;           /* Центрируем ссылки */
+            margin-bottom: 30px;          /* Отступ снизу */
+            padding: 15px 0;              /* Внутренние отступы */
+            background: white;            /* Белый фон */
+            border-radius: 12px;          /* Скруглённые углы */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Лёгкая тень */
+        }
+        
+        nav a {
+            text-decoration: none;        /* Убираем подчёркивание */
+            color: #3498db;               /* Синий цвет */
+            margin: 0 15px;               /* Отступы между ссылками */
+            font-weight: bold;            /* Жирный шрифт */
+            padding: 8px 0;               /* Вертикальные отступы для удобства клика */
+            display: inline-block;        /* Чтобы margin работал правильно */
+        }
+        
+        nav a:hover {
+            text-decoration: underline;    /* Подчёркивание при наведении */
+            color: #2980b9;               /* Темнее при наведении */
+        }
+        /* ===== КОНЕЦ СТИЛЕЙ НАВИГАЦИИ ===== */
+        
         .upload-area {
             border: 2px dashed #3498db;
             background: #fff;
@@ -64,12 +85,23 @@
             cursor: pointer;
             font-size: 12px;
         }
-        h1 { text-align: center; color: #2c3e50; }
+        h1 { 
+            text-align: center; 
+            color: #2c3e50; 
+        }
     </style>
 </head>
 <body>
 
+    <!-- ===== НАВИГАЦИЯ ТЕПЕРЬ ВНУТРИ BODY И В ЦЕНТРЕ ===== -->
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="about.html">Об авторе</a>
+        <a href="gallery.html">📸 Галерея</a>
+    </nav>
+
     <h1>📸 Моя галерея</h1>
+    
     <!-- Зона для загрузки -->
     <div class="upload-area" id="dropArea">
         <p>✨ Нажми сюда или перетащи картинку ✨</p>
@@ -81,99 +113,99 @@
     
     <script>
         // 1. Находим все нужные элементы на странице
-const gallery = document.getElementById('gallery');
-const fileInput = document.getElementById('fileInput');
-const dropArea = document.getElementById('dropArea');
+        const gallery = document.getElementById('gallery');
+        const fileInput = document.getElementById('fileInput');
+        const dropArea = document.getElementById('dropArea');
 
-// 2. Включаем хранилище: достаем старые картинки или создаем новую пустую папку
-let imagesArray = JSON.parse(localStorage.getItem('myGallery')) || [];
+        // 2. Включаем хранилище: достаем старые картинки или создаем новую пустую папку
+        let imagesArray = JSON.parse(localStorage.getItem('myGallery')) || [];
 
-// 3. Функция, которая рисует галерею на экране
-function renderGallery() {
-    gallery.innerHTML = ''; // Очищаем экран перед отрисовкой
+        // 3. Функция, которая рисует галерею на экране
+        function renderGallery() {
+            gallery.innerHTML = ''; // Очищаем экран перед отрисовкой
 
-    if (imagesArray.length === 0) {
-        gallery.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Пока здесь пусто, загрузи первую картинку!</p>';
-        return;
-    }
+            if (imagesArray.length === 0) {
+                gallery.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Пока здесь пусто, загрузи первую картинку!</p>';
+                return;
+            }
 
-    imagesArray.forEach((imageDataUrl, index) => {
-        // Создаем контейнер для картинки
-        const card = document.createElement('div');
-        card.classList.add('card');
-        
-        // Вставляем саму картинку
-        const img = document.createElement('img');
-        img.src = imageDataUrl;
-        img.alt = `Фото ${index + 1}`;
-        
-        // Создаем кнопку удаления
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Удалить';
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.onclick = () => deleteImage(index); // При нажатии удаляем эту картинку
-        
-        card.appendChild(img);
-        card.appendChild(deleteBtn);
-        gallery.appendChild(card);
-    });
-}
+            imagesArray.forEach((imageDataUrl, index) => {
+                // Создаем контейнер для картинки
+                const card = document.createElement('div');
+                card.classList.add('card');
+                
+                // Вставляем саму картинку
+                const img = document.createElement('img');
+                img.src = imageDataUrl;
+                img.alt = `Фото ${index + 1}`;
+                
+                // Создаем кнопку удаления
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Удалить';
+                deleteBtn.classList.add('delete-btn');
+                deleteBtn.onclick = () => deleteImage(index); // При нажатии удаляем эту картинку
+                
+                card.appendChild(img);
+                card.appendChild(deleteBtn);
+                gallery.appendChild(card);
+            });
+        }
 
-// 4. Функция для сохранения галереи в памяти браузера
-function saveGallery() {
-    localStorage.setItem('myGallery', JSON.stringify(imagesArray));
-    renderGallery(); // Перерисовываем экран
-}
+        // 4. Функция для сохранения галереи в памяти браузера
+        function saveGallery() {
+            localStorage.setItem('myGallery', JSON.stringify(imagesArray));
+            renderGallery(); // Перерисовываем экран
+        }
 
-// 5. Функция для удаления картинки
-function deleteImage(index) {
-    imagesArray.splice(index, 1); // Удаляем 1 элемент по индексу
-    saveGallery(); // Сохраняем изменения
-}
+        // 5. Функция для удаления картинки
+        function deleteImage(index) {
+            imagesArray.splice(index, 1); // Удаляем 1 элемент по индексу
+            saveGallery(); // Сохраняем изменения
+        }
 
-// 6. Функция, которая обрабатывает загрузку новых файлов
-function handleFiles(files) {
-    Array.from(files).forEach(file => {
-        // Проверяем, что это точно картинка (небольшая защита)
-        if (!file.type.startsWith('image/')) return;
+        // 6. Функция, которая обрабатывает загрузку новых файлов
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                // Проверяем, что это точно картинка (небольшая защита)
+                if (!file.type.startsWith('image/')) return;
 
-        const reader = new FileReader();
-        
-        reader.onload = function(event) {
-            // Когда картинка "прочитана", добавляем её в массив
-            imagesArray.push(event.target.result);
-            saveGallery(); // Сохраняем всю галерею
-        };
-        
-        reader.readAsDataURL(file); // Начинаем чтение файла
-    });
-}
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    // Когда картинка "прочитана", добавляем её в массив
+                    imagesArray.push(event.target.result);
+                    saveGallery(); // Сохраняем всю галерею
+                };
+                
+                reader.readAsDataURL(file); // Начинаем чтение файла
+            });
+        }
 
-// 7. Навешиваем обработчики событий (слушатели)
-// Клик по области загрузки
-dropArea.addEventListener('click', () => fileInput.click());
+        // 7. Навешиваем обработчики событий (слушатели)
+        // Клик по области загрузки
+        dropArea.addEventListener('click', () => fileInput.click());
 
-// Выбор файла через окно выбора
-fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+        // Выбор файла через окно выбора
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
-// Drag-and-drop: чтобы было совсем как в крутых сервисах
-dropArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropArea.style.background = '#eef5ff';
-});
+        // Drag-and-drop: чтобы было совсем как в крутых сервисах
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.background = '#eef5ff';
+        });
 
-dropArea.addEventListener('dragleave', () => {
-    dropArea.style.background = '#fff';
-});
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.background = '#fff';
+        });
 
-dropArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropArea.style.background = '#fff';
-    handleFiles(e.dataTransfer.files);
-});
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.background = '#fff';
+            handleFiles(e.dataTransfer.files);
+        });
 
-// 8. При загрузке страницы показываем то, что уже есть в localStorage
-renderGallery();
+        // 8. При загрузке страницы показываем то, что уже есть в localStorage
+        renderGallery();
     </script>
 </body>
 </html>
