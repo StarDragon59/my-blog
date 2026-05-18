@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>✨ Угадай число — Магическая игра</title>
+    <style>
+        link rel="stylesheet" href="style.css">
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: #0a1628;
+            background-image: radial-gradient(circle at 10% 20%, #1a2a4a, #0a1628);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 32px 24px;
+            text-align: center;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            max-width: 400px;
+            width: 100%;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @media (min-width: 768px) {
+            .game-container {
+                max-width: 500px;
+                padding: 48px 40px;
+                border-radius: 40px;
+            }
+        }
+
+        h1 {
+            color: #7cb8ff;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+        }
+
+        p {
+            color: #b8d0ff;
+            font-size: 1em;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        @media (min-width: 768px) {
+            p {
+                font-size: 1.1em;
+                margin-bottom: 32px;
+            }
+        }
+
+        button {
+            background: linear-gradient(135deg, #3a6ea5, #2c5282);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            button {
+                padding: 16px 32px;
+                font-size: 18px;
+                width: auto;
+                min-width: 200px;
+            }
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            background: linear-gradient(135deg, #4a7eb5, #366292);
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎲 Угадай число</h1>
+        <p>🌙 Я загадал число от 1 до 10<br>✨ Сможешь угадать? ✨</p>
+        <button id="startBtn">✨ Начать игру ✨</button>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        
+        function playGame() {
+            let secret = Math.floor(Math.random() * 10) + 1;
+            let guess = prompt('🔮 Какое число я загадал? (от 1 до 10)');
+            
+            if (guess === null) {
+                alert('😔 Магия ждёт тебя в следующий раз!');
+            } else if (guess == secret) {
+                alert('🎉 Ура! Ты угадал! Магия на твоей стороне! 🎉');
+            } else {
+                alert(`😢 Ой... Я загадал ${secret}. Попробуй ещё раз! 🌙`);
+            }
+        }
+        
+        startBtn.onclick = playGame;
+    </script>
+</body>
+</html>
