@@ -213,3 +213,22 @@ footer {
         font-size: 16px;
     }
 }
+/* Мобильная адаптация для всего сайта */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+    
+    main {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.6em;
+    }
+    
+    nav a {
+        display: inline-block;
+        margin: 5px 8px;
+    }
+}
