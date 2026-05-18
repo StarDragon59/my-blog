@@ -150,3 +150,66 @@ footer {
     background: #3498db;
     color: white;
 }
+.game-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 28px;
+    padding: 32px 24px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок игры */
+.game-container h1 {
+    color: #2c3e50;
+    font-size: 2em;
+    margin-bottom: 16px;
+}
+
+/* Текст игры */
+.game-container p {
+    color: #555;
+    margin-bottom: 28px;
+}
+
+/* Кнопка игры */
+.game-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 18px;
+    border-radius: 60px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.game-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.game-btn:active {
+    transform: scale(0.98);
+}
+
+/* Мобильная адаптация для игры */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 24px 20px;
+        border-radius: 20px;
+    }
+    
+    .game-container h1 {
+        font-size: 1.6em;
+    }
+    
+    .game-btn {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+}
