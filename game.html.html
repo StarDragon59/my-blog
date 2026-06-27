@@ -4,113 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>✨ Игры</title>
+    <link rel="stylesheet" href="style_game.css">
     <style>
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-            background: #0a1628;
-            background-image: radial-gradient(circle at 10% 20%, #1a2a4a, #0a1628);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 16px;
-        }
-
-        .game-container {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 32px 24px;
-            text-align: center;
-            border: 1px solid rgba(100, 150, 255, 0.3);
-            max-width: 500px;
-            width: 100%;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.6s ease-out;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .game-container {
-                padding: 48px 40px;
-                border-radius: 40px;
-            }
-        }
-
-        h1 {
-            color: #7cb8ff;
-            font-size: 1.8em;
-            text-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
-            margin-bottom: 12px;
-        }
-
-        @media (min-width: 768px) {
-            h1 {
-                font-size: 2.2em;
-            }
-        }
-
-        p {
-            color: #b8d0ff;
-            font-size: 1em;
-            line-height: 1.5;
-            margin-bottom: 28px;
-        }
-
-        @media (min-width: 768px) {
-            p {
-                font-size: 1.1em;
-                margin-bottom: 32px;
-            }
-        }
-
-        button {
-            background: linear-gradient(135deg, #3a6ea5, #2c5282);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            font-size: 16px;
-            border-radius: 60px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        @media (min-width: 768px) {
-            button {
-                padding: 16px 32px;
-                font-size: 18px;
-                width: auto;
-                min-width: 200px;
-            }
-        }
-
-        button:hover {
-            transform: scale(1.02);
-            background: linear-gradient(135deg, #4a7eb5, #366292);
-            box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Стили для крестиков-ноликов */
+        /* Дополнительные стили для крестиков-ноликов */
         .game-status {
             color: #b8d0ff;
             font-size: 1.1em;
@@ -179,29 +75,8 @@
         .score.x-score span { color: #ff6b6b; }
         .score.o-score span { color: #4ecdc4; }
 
-        .game-selector {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .game-btn {
-            width: auto;
-            min-width: 120px;
-            padding: 10px 20px;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(100, 150, 255, 0.3);
-        }
-        .game-btn.active {
-            background: linear-gradient(135deg, #3a6ea5, #2c5282);
-            border-color: #7cb8ff;
-        }
-        .game-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .game-btn.active:hover {
-            background: linear-gradient(135deg, #4a7eb5, #366292);
+        .game-container:last-of-type {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -248,7 +123,7 @@
         });
 
         // ========================================
-        // 2. ИГРА "КРЕСТИКИ-НОЛИКИ"
+        // 2. ИГРА "КРЕСТИКИ-НОЛИКИ" (ПРОТИВ БОТА)
         // ========================================
         (function tictactoe() {
             const board = document.getElementById('board');
@@ -257,16 +132,50 @@
             const xScoreSpan = document.getElementById('xScore');
             const oScoreSpan = document.getElementById('oScore');
 
+            // Если элементов нет, выходим
+            if (!board || !status) {
+                console.error('Ошибка: не найдены элементы для игры!');
+                return;
+            }
+
             let boardState = Array(9).fill(null);
             let currentPlayer = 'X';
             let gameActive = true;
             let scores = { X: 0, O: 0 };
+            let isBotTurn = false;
 
             const winPatterns = [
                 [0, 1, 2], [3, 4, 5], [6, 7, 8],
                 [0, 3, 6], [1, 4, 7], [2, 5, 8],
                 [0, 4, 8], [2, 4, 6]
             ];
+
+            function botMove() {
+                if (!gameActive || currentPlayer !== 'O') return;
+                const emptyCells = boardState
+                    .map((cell, index) => cell === null ? index : null)
+                    .filter(index => index !== null);
+                if (emptyCells.length === 0) return;
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                boardState[randomIndex] = 'O';
+                renderBoard();
+                const result = checkWinner();
+                if (result) {
+                    gameActive = false;
+                    if (result.winner === 'draw') {
+                        updateStatus('Ничья! 🤝');
+                    } else {
+                        scores[result.winner]++;
+                        updateScore();
+                        highlightWinCells(result.pattern);
+                        updateStatus(`🏆 Победил ${result.winner === 'X' ? '❌ (Ты!)' : '⭕ (Бот!)'}`);
+                    }
+                    return;
+                }
+                currentPlayer = 'X';
+                isBotTurn = false;
+                updateStatus(`Твой ход (X)`);
+            }
 
             function renderBoard() {
                 board.innerHTML = '';
@@ -309,33 +218,33 @@
             }
 
             function handleCellClick(index) {
-                if (!gameActive || boardState[index] !== null) return;
-
-                boardState[index] = currentPlayer;
+                if (!gameActive || boardState[index] !== null || currentPlayer !== 'X' || isBotTurn) return;
+                boardState[index] = 'X';
                 renderBoard();
-                
                 const result = checkWinner();
                 if (result) {
                     gameActive = false;
                     if (result.winner === 'draw') {
-                        updateStatus('Ничья!');
+                        updateStatus('Ничья! 🤝');
                     } else {
                         scores[result.winner]++;
                         updateScore();
                         highlightWinCells(result.pattern);
-                        updateStatus(`🏆 Победил ${result.winner === 'X' ? '❌' : '⭕'}!`);
+                        updateStatus(`🏆 Победил ${result.winner === 'X' ? '❌ (Ты!)' : '⭕ (Бот!)'}`);
                     }
                     return;
                 }
-
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                updateStatus(`Ход игрока ${currentPlayer === 'X' ? '❌' : '⭕'}`);
+                currentPlayer = 'O';
+                isBotTurn = true;
+                updateStatus('Ход бота (O)... 🤖');
+                setTimeout(botMove, 300);
             }
 
             function resetGame() {
                 boardState = Array(9).fill(null);
                 currentPlayer = 'X';
                 gameActive = true;
+                isBotTurn = false;
                 renderBoard();
                 updateStatus('Твой ход (X)');
             }
