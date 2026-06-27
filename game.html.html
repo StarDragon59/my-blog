@@ -2,50 +2,355 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 Игра — Угадай число</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>✨ Игры</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: #0a1628;
+            background-image: radial-gradient(circle at 10% 20%, #1a2a4a, #0a1628);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 16px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 32px 24px;
+            text-align: center;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            max-width: 500px;
+            width: 100%;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .game-container {
+                padding: 48px 40px;
+                border-radius: 40px;
+            }
+        }
+
+        h1 {
+            color: #7cb8ff;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+        }
+
+        p {
+            color: #b8d0ff;
+            font-size: 1em;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        @media (min-width: 768px) {
+            p {
+                font-size: 1.1em;
+                margin-bottom: 32px;
+            }
+        }
+
+        button {
+            background: linear-gradient(135deg, #3a6ea5, #2c5282);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            button {
+                padding: 16px 32px;
+                font-size: 18px;
+                width: auto;
+                min-width: 200px;
+            }
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            background: linear-gradient(135deg, #4a7eb5, #366292);
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Стили для крестиков-ноликов */
+        .game-status {
+            color: #b8d0ff;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            min-height: 2em;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 350px;
+            margin: 0 auto 20px;
+        }
+
+        .cell {
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            border-radius: 16px;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .cell:active {
+            transform: scale(0.95);
+        }
+
+        .cell.x { color: #ff6b6b; text-shadow: 0 0 15px rgba(255, 107, 107, 0.4); }
+        .cell.o { color: #4ecdc4; text-shadow: 0 0 15px rgba(78, 205, 196, 0.4); }
+
+        .cell.win-cell {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            color: #b8d0ff;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .score {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(100, 150, 255, 0.1);
+        }
+        .score span { font-weight: bold; color: #ffd700; }
+        .score.x-score span { color: #ff6b6b; }
+        .score.o-score span { color: #4ecdc4; }
+
+        .game-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .game-btn {
+            width: auto;
+            min-width: 120px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        .game-btn.active {
+            background: linear-gradient(135deg, #3a6ea5, #2c5282);
+            border-color: #7cb8ff;
+        }
+        .game-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .game-btn.active:hover {
+            background: linear-gradient(135deg, #4a7eb5, #366292);
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Дневник разработчика</h1>
-        <nav>
-            <a href="index.html">Главная</a>
-            <a href="about.html">Об авторе</a>
-            <a href="game.html">🎮 Игра</a>
-        </nav>
-    </header>
+    <!-- ====== ИГРА "УГАДАЙ ЧИСЛО" ====== -->
+    <div class="game-container" id="guessGame">
+        <h1>🎲 Угадай число</h1>
+        <p>🌙 Я загадал число от 1 до 10<br>✨ Сможешь угадать? ✨</p>
+        <button id="startBtn">✨ Начать игру ✨</button>
+    </div>
 
-    <main>
-        <div class="game-container">
-            <h1>🎲 Угадай число</h1>
-            <p>🌙 Я загадал число от 1 до 10<br>✨ Сможешь угадать? ✨</p>
-            <button class="game-btn" id="startBtn">✨ Начать игру ✨</button>
+    <!-- ====== ИГРА "КРЕСТИКИ-НОЛИКИ" ====== -->
+    <div class="game-container" id="tictactoeGame">
+        <h1>❌ Крестики-нолики ⭕</h1>
+        <div class="game-status" id="status">Твой ход (X)</div>
+        
+        <div class="scoreboard">
+            <div class="score x-score">❌ X: <span id="xScore">0</span></div>
+            <div class="score o-score">⭕ O: <span id="oScore">0</span></div>
         </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Мой Блог. Сделано с любовью к коду.</p>
-    </footer>
+        
+        <div class="board" id="board">
+            <!-- 9 клеток будут созданы через JavaScript -->
+        </div>
+        
+        <button id="resetBtn">🔄 Новая игра</button>
+    </div>
 
     <script>
-        const startBtn = document.getElementById('startBtn');
-        
-        function playGame() {
-            let secret = Math.floor(Math.random() * 10) + 1;
-            let guess = prompt('🔮 Какое число я загадал? (от 1 до 10)');
-            
+        // ========================================
+        // 1. ИГРА "УГАДАЙ ЧИСЛО"
+        // ========================================
+        document.getElementById('startBtn').addEventListener('click', function() {
+            const secret = Math.floor(Math.random() * 10) + 1;
+            const guess = prompt('🔮 Какое число я загадал? (от 1 до 10)');
             if (guess === null) {
                 alert('😔 Магия ждёт тебя в следующий раз!');
             } else if (guess == secret) {
-                alert('🎉 Ура! Ты угадал! 🎉');
+                alert('🎉 Ура! Ты угадал! Магия на твоей стороне! 🎉');
             } else {
                 alert(`😢 Ой... Я загадал ${secret}. Попробуй ещё раз! 🌙`);
             }
-        }
-        
-        startBtn.onclick = playGame;
+        });
+
+        // ========================================
+        // 2. ИГРА "КРЕСТИКИ-НОЛИКИ"
+        // ========================================
+        (function tictactoe() {
+            const board = document.getElementById('board');
+            const status = document.getElementById('status');
+            const resetBtn = document.getElementById('resetBtn');
+            const xScoreSpan = document.getElementById('xScore');
+            const oScoreSpan = document.getElementById('oScore');
+
+            let boardState = Array(9).fill(null);
+            let currentPlayer = 'X';
+            let gameActive = true;
+            let scores = { X: 0, O: 0 };
+
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            function renderBoard() {
+                board.innerHTML = '';
+                boardState.forEach((value, index) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    if (value === 'X') cell.classList.add('x');
+                    if (value === 'O') cell.classList.add('o');
+                    cell.textContent = value || '';
+                    cell.dataset.index = index;
+                    cell.addEventListener('click', () => handleCellClick(index));
+                    board.appendChild(cell);
+                });
+            }
+
+            function updateStatus(message) {
+                status.textContent = message;
+            }
+
+            function checkWinner() {
+                for (const pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
+                        return { winner: boardState[a], pattern: pattern };
+                    }
+                }
+                return boardState.every(cell => cell !== null) ? { winner: 'draw' } : null;
+            }
+
+            function highlightWinCells(pattern) {
+                const cells = document.querySelectorAll('.cell');
+                pattern.forEach(index => {
+                    cells[index].classList.add('win-cell');
+                });
+            }
+
+            function updateScore() {
+                xScoreSpan.textContent = scores.X;
+                oScoreSpan.textContent = scores.O;
+            }
+
+            function handleCellClick(index) {
+                if (!gameActive || boardState[index] !== null) return;
+
+                boardState[index] = currentPlayer;
+                renderBoard();
+                
+                const result = checkWinner();
+                if (result) {
+                    gameActive = false;
+                    if (result.winner === 'draw') {
+                        updateStatus('Ничья!');
+                    } else {
+                        scores[result.winner]++;
+                        updateScore();
+                        highlightWinCells(result.pattern);
+                        updateStatus(`🏆 Победил ${result.winner === 'X' ? '❌' : '⭕'}!`);
+                    }
+                    return;
+                }
+
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                updateStatus(`Ход игрока ${currentPlayer === 'X' ? '❌' : '⭕'}`);
+            }
+
+            function resetGame() {
+                boardState = Array(9).fill(null);
+                currentPlayer = 'X';
+                gameActive = true;
+                renderBoard();
+                updateStatus('Твой ход (X)');
+            }
+
+            function resetFullGame() {
+                scores = { X: 0, O: 0 };
+                updateScore();
+                resetGame();
+            }
+
+            renderBoard();
+            updateStatus('Твой ход (X)');
+            resetBtn.addEventListener('click', resetFullGame);
+        })();
     </script>
+
 </body>
 </html>
