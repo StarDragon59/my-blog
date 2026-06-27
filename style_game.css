@@ -1,0 +1,125 @@
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #0f1020;
+    background-image: radial-gradient(circle at 10% 20%, #202a5a, #0f1020);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Располагаем элементы вертикально */
+    align-items: center;
+    justify-content: flex-start; /* Прижимаем к верху */
+    margin: 0;
+    padding: 16px;
+}
+
+.game-container {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 32px 24px;
+    text-align: center;
+    border: 1px solid rgba(100, 150, 255, 0.3);
+    max-width: 500px;
+    width: 100%;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+    margin-bottom: 24px; /* Отступ между играми */
+    box-sizing: border-box;
+}
+
+/* Отступ для последней игры */
+.game-container:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Адаптация для мобильных телефонов */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+    
+    .game-container {
+        padding: 24px 16px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    p {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+    }
+
+    button {
+    background: rgba(255, 255, 255, 0.08);
+    color: #b8d0ff;
+    border: 1px solid rgba(100, 150, 255, 0.4);
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 60px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    text-shadow: 0 0 10px rgba(100, 150, 255, 0.3);
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(100, 150, 255, 0.8);
+    box-shadow: 0 0 30px rgba(100, 150, 255, 0.2);
+    transform: scale(1.02);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+    /* Поле для крестиков-ноликов */
+    .board {
+        max-width: 320px;
+        gap: 6px;
+    }
+    .cell {
+        font-size: 2.2em;
+        border-radius: 12px;
+    }
+
+    /* Счётчик */
+    .scoreboard {
+        font-size: 0.85em;
+        gap: 12px;
+    }
+    .score {
+        padding: 6px 12px;
+    }
+
+    /* Статус игры */
+    .game-status {
+        font-size: 1em;
+        min-height: 1.8em;
+    }
+}
+
+/* Адаптация для планшетов и маленьких ноутбуков */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .game-container {
+        max-width: 90%;
+        padding: 40px 32px;
+    }
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
