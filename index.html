@@ -3,64 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой личный блог — Первая запись</title>
-    <!-- Подключаем файл со стилями (создадим его следующим шагом) -->
+    <title>Дневник разработчика — Мой блог</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Дневник разработчика</h1>
-     <nav>
-    <a href="index.html">Главная</a>
-    <a href="about.html">Об авторе</a>
-    <a href="gallery.html">📸 Галерея</a>    
-    <a href="game.html">🎮 Игра</a>   
-</nav>
+    <header class="site-header">
+        <div class="container">
+            <h1 class="site-title">Дневник разработчика</h1>
+            <nav class="site-nav">
+                <a href="index.html" class="active">Главная</a>
+                <a href="about.html">Об авторе</a>
+                <a href="gallery.html">📸 Галерея</a>
+                <a href="game.html">🎮 Игра</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <article>
-            <header>
-                <h2>Моя первая запись в блоге</h2>
-                <p class="meta">Опубликовано: <time datetime="2026-03-06">6 марта 2026</time></p>
+    <main class="container">
+
+        <!-- 🐱 Блок со случайным котиком -->
+        <section class="cat-block">
+            <div class="cat-card">
+                <div class="cat-card__header">
+                    <span class="cat-card__emoji">🐱</span>
+                    <span class="cat-card__title">Котик дня</span>
+                </div>
+                <div class="cat-card__image-wrapper">
+                    <img id="randomCat" src="" alt="Случайный котик" loading="lazy">
+                </div>
+                <button id="newCatBtn" class="btn btn--ghost">Другой котик 🎲</button>
+            </div>
+        </section>
+
+        <!-- Основной контент блога -->
+        <article class="post">
+            <header class="post__header">
+                <h2 class="post__title">Моя первая запись в блоге</h2>
+                <p class="meta">
+                    Опубликовано: <time datetime="2026-03-06">6 марта 2026</time>
+                </p>
             </header>
 
             <section class="content">
                 <p>Всем привет! Это мой первый опыт в создании сайта на <strong>HTML</strong> и <strong>CSS</strong>. Сегодня я научилась структурировать страницу.</p>
-                
-                <img src="https://avatars.mds.yandex.net/i?id=90f6c4b4949566e2a721c6cdf65dc75c61e479c2-4033338-images-thumbs&n=13" alt="Рабочее пространство" class="center-image">
+
+                <img src="https://kartinki.pibig.info/uploads/posts/2023-12/1701795021_kartinki-pibig-info-p-rabochii-stol-kompyutera-kartinki-vkontakt-1.jpg"
+                     alt="Рабочее пространство" class="center-image">
 
                 <h3>Чему я хочу научиться:</h3>
-                <ul>
+                <ul class="checklist">
                     <li>Верстать адаптивные страницы</li>
                     <li>Работать с данными в JSON</li>
                     <li>Запустить сайт на GitHub Pages</li>
                 </ul>
 
-                 <p>✨ А ещё я сделала <a href="game.html">магическую игру "Угадай число"</a>! Попробуй угадать, какое число я загадала ✨</p>
+                <p>✨ А ещё я сделала <a href="game.html">магическую игру «Угадай число»</a>! Попробуй угадать, какое число я загадала ✨</p>
+                <p>А ещё я сделала свою <a href="gallery.html">личную галерею</a>, где можно собирать любимые картинки!</p>
+                <p>А ещё я сделала <a href="https://stardragon59.github.io/checkers/">Шашки</a>! Попробуй обыграть виртуального противника 😉</p>
             </section>
 
-             <section class="content">
-            <p>
-    А ещё я сделала свою 
-    <a href="gallery.html">личную галерею</a>, 
-    где можно собирать любимые картинки!
-</p>
-                 </section>
+            <div id="posts-list"></div>
 
-       <div id="posts-list"></div>
-<script src="blog.js"></script>
-            
-            <footer>
-                <p>Теги: #web #learning #firstpost</p>
+            <footer class="post__footer">
+                <p class="post__tags">Теги: #web #learning #firstpost</p>
             </footer>
         </article>
+
+        <!-- 😂 Карточка со случайной шуткой -->
+        <section class="joke-block">
+            <div class="joke-card">
+                <div class="joke-card__header">
+                    <span class="joke-card__emoji">😂</span>
+                    <span class="joke-card__title">Шутка на сегодня</span>
+                </div>
+                <p id="jokeText" class="joke-card__text">Загружаю шутку...</p>
+                <button id="newJokeBtn" class="btn btn--primary">Ещё шутку 🎲</button>
+            </div>
+        </section>
+
     </main>
 
-    <footer>
-        <p>&copy; 2026 Мой Блог. Сделано с любовью к коду.</p>
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Мой Блог. Сделано с любовью к коду.</p>
+        </div>
     </footer>
 
+    <script src="blog.js"></script>
+    <script>
+        // ============================================
+        // 🐱 СЛУЧАЙНЫЙ КОТИК
+        // ============================================
+        const catImg = document.getElementById('randomCat');
+        const newCatBtn = document.getElementById('newCatBtn');
+
+        function loadRandomCat() {
+            // cataas.com отдаёт случайного кота. Добавляем timestamp,
+            // чтобы браузер не кэшировал картинку и каждый раз была новая.
+            catImg.src = 'https://cataas.com/cat?t=' + Date.now();
+        }
+
+        catImg.addEventListener('error', () => {
+            // Запасной вариант, если cataas не отвечает
+            catImg.src = 'https://placekitten.com/400/300';
+        });
+
+        newCatBtn.addEventListener('click', loadRandomCat);
+        loadRandomCat(); // загружаем котика сразу при открытии
+
+        // ============================================
+        // 😂 СЛУЧАЙНАЯ ШУТКА
+        // ============================================
+        const jokes = [
+            "Что сказала акула, съев клоуна? Вкус немного смешной!",
+            "Что оранжевое и звучит как морковка? Попугай.",
+            "Какая любимая часть компьютера у космонавта? Пробел.",
+            "Почему программисты не любят природу? Слишком много багов.",
+            "Что сказал один бит другому? Ты мне не ноль.",
+            "Как называют волшебную собаку? Лабракадáбра.",
+            "Что делает кот, когда учится программировать? Мур-код.",
+            "Сколько программистов нужно, чтобы поменять лампочку? Ни одного — это проблема железа.",
+            "Почему кофе не работает? Потому что он уже заварен.",
+            "Что говорит один Wi-Fi другому? Ты меня не ловишь."
+        ];
+
+        const jokeText = document.getElementById('jokeText');
+        const newJokeBtn = document.getElementById('newJokeBtn');
+        let lastJokeIndex = -1;
+
+        function showRandomJoke() {
+            let index;
+            do {
+                index = Math.floor(Math.random() * jokes.length);
+            } while (jokes.length > 1 && index === lastJokeIndex);
+
+            lastJokeIndex = index;
+            jokeText.textContent = jokes[index];
+        }
+
+        newJokeBtn.addEventListener('click', showRandomJoke);
+        showRandomJoke(); // показать шутку сразу
+    </script>
 </body>
 </html>
