@@ -3,51 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой блог — Об авторе</title>
+    <title>Об авторе — Дневник разработчика</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Дневник разработчика</h1>
-       <nav>
-    <a href="index.html">Главная</a>
-    <a href="about.html">Об авторе</a>
-    <a href="gallery.html">📸 Галерея</a>
-</nav>
+    <header class="site-header">
+        <div class="container">
+            <h1 class="site-title">Дневник разработчика</h1>
+            <nav class="site-nav">
+                <a href="index.html">Главная</a>
+                <a href="about.html" class="active">Об авторе</a>
+                <a href="gallery.html">📸 Галерея</a>
+                <a href="game.html">🎮 Игра</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <article>
-            <h2>Об авторе</h2>
-            
-            <img src="https://sun9-21.userapi.com/s/v1/ig2/hvpaWjlngteQZIl_JsaxWdLoWwYb4HKaOeaKpDmnPaCpQ6my7NATu8GvSOJfk8CdP_wfBxCVUOf9HFGpiiOIr9Lc.jpg?quality=95&as=32x45,48x68,72x102,108x153,160x227,240x341,360x511,480x681,540x766,640x908,720x1022,1080x1533,1280x1817,1440x2044&from=bu&u=fYqLtEGnHd-pkW7Uq1I-mHCxgcQSzGH3eMT022jJL8Y&cs=1280x0" alt="Фото автора" style="width: 150px; border-radius: 50%;">
+    <main class="container">
 
-            <p>Привет! Меня зовут Стася. Я начинающий веб-разработчик.</p>
-            
-            <h3>Мои навыки:</h3>
-            <ul>
-                <li>HTML5</li>
-                <li>CSS3</li>
-                <li>JavaScript (в процессе)</li>
-            </ul>
+        <article class="post about-page">
+            <header class="post__header">
+                <h2 class="post__title">👋 Привет, я Стася</h2>
+                <p class="meta">Начинающий веб-разработчик</p>
+            </header>
 
-            <h3>Мои цели:</h3>
-            <ul>
-                <li>Создавать крутые сайты</li>
-                <li>Учиться каждый день</li>
-                <li>Делиться опытом в блоге</li>
-            </ul>
+            <div class="about-profile">
+                <img src="https://sun9-21.userapi.com/s/v1/ig2/hvpaWjlngteQZIl_JsaxWdLoWwYb4HKaOeaKpDmnPaCpQ6my7NATu8GvSOJfk8CdP_wfBxCVUOf9HFGpiiOIr9Lc.jpg?quality=95&as=32x45,48x68,72x102,108x153,160x227,240x341,360x511,480x681,540x766,640x908,720x1022,1080x1533,1280x1817,1440x2044&from=bu&u=fYqLtEGnHd-pkW7Uq1I-mHCxgcQSzGH3eMT022jJL8Y&cs=1280x0"
+                     alt="Фото автора"
+                     class="about-profile__avatar">
 
-            <div class="social-links">
-                <a href="mailto:stardragon.design@mail.ru">📧 Email</a>
-                <a href="https://github.com/StarDragon59" target="_blank">💻 GitHub</a>
+                <div class="about-profile__info">
+                    <p>Привет! Меня зовут Стася. Я изучаю веб-разработку и делюсь своим опытом в этом блоге.</p>
+                    <p>Здесь я рассказываю о своих проектах, экспериментах и маленьких победах.</p>
+                </div>
             </div>
+
+            <section class="content">
+                <h3>🛠 Мои навыки</h3>
+                <div class="skill-chips">
+                    <span class="chip">HTML5</span>
+                    <span class="chip">CSS3</span>
+                    <span class="chip chip--progress">JavaScript</span>
+                </div>
+
+                <h3>🎯 Мои цели</h3>
+                <ul class="checklist">
+                    <li>Создавать крутые сайты</li>
+                    <li>Учиться каждый день</li>
+                    <li>Делиться опытом в блоге</li>
+                </ul>
+
+                <h3>📬 Связаться со мной</h3>
+                <div class="social-links">
+                    <a href="mailto:stardragon.design@mail.ru">📧 Email</a>
+                <a href="https://github.com/StarDragon59" target="_blank">💻 GitHub</a>
+                </div>
+            </section>
         </article>
+
     </main>
 
-    <footer>
-        <p>&copy; 2026 Мой Блог. Сделано с любовью к коду.</p>
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Мой Блог. Сделано с любовью к коду.</p>
+        </div>
     </footer>
 
 </body>
