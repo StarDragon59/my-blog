@@ -2,210 +2,229 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Моя личная галерея</title>
-    <style>
-        /* Простые и понятные стили для галереи */
-        body {
-            font-family: system-ui, sans-serif;
-            background: #f0f2f5;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        /* ===== НОВЫЕ СТИЛИ ДЛЯ НАВИГАЦИИ ===== */
-        nav {
-            text-align: center;           /* Центрируем ссылки */
-            margin-bottom: 30px;          /* Отступ снизу */
-            padding: 15px 0;              /* Внутренние отступы */
-            background: white;            /* Белый фон */
-            border-radius: 12px;          /* Скруглённые углы */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Лёгкая тень */
-        }
-        
-        nav a {
-            text-decoration: none;        /* Убираем подчёркивание */
-            color: #3498db;               /* Синий цвет */
-            margin: 0 15px;               /* Отступы между ссылками */
-            font-weight: bold;            /* Жирный шрифт */
-            padding: 8px 0;               /* Вертикальные отступы для удобства клика */
-            display: inline-block;        /* Чтобы margin работал правильно */
-        }
-        
-        nav a:hover {
-            text-decoration: underline;    /* Подчёркивание при наведении */
-            color: #2980b9;               /* Темнее при наведении */
-        }
-        /* ===== КОНЕЦ СТИЛЕЙ НАВИГАЦИИ ===== */
-        
-        .upload-area {
-            border: 2px dashed #3498db;
-            background: #fff;
-            padding: 30px;
-            text-align: center;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-bottom: 30px;
-        }
-        .upload-area:hover {
-            background: #eef5ff;
-            border-color: #2980b9;
-        }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: 0.2s;
-            text-align: center;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-        }
-        .card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        button.delete-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        h1 { 
-            text-align: center; 
-            color: #2c3e50; 
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя галерея — Дневник разработчика</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ===== НАВИГАЦИЯ ТЕПЕРЬ ВНУТРИ BODY И В ЦЕНТРЕ ===== -->
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="about.html">Об авторе</a>
-        <a href="gallery.html">📸 Галерея</a>
-    </nav>
+    <!-- ШАПКА -->
+    <header class="site-header">
+        <div class="container">
+            <h1 class="site-title">Дневник разработчика</h1>
+            <nav class="site-nav">
+                <a href="index.html">Главная</a>
+                <a href="about.html">Об авторе</a>
+                <a href="gallery.html" class="active">📸 Галерея</a>
+                <a href="game.html">🎮 Игра</a>
+            </nav>
+        </div>
+    </header>
 
-    <h1>📸 Моя галерея</h1>
-    
-    <!-- Зона для загрузки -->
-    <div class="upload-area" id="dropArea">
-        <p>✨ Нажми сюда или перетащи картинку ✨</p>
-        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+    <main class="container">
+        <article class="post">
+            <header class="post__header">
+                <h2 class="post__title">📸 Моя галерея</h2>
+                <p class="meta">Нажми на картинку, чтобы открыть её в полный экран</p>
+            </header>
+
+            <!-- Зона загрузки -->
+            <div class="upload-area" id="dropArea">
+                <div class="upload-area__icon">✨</div>
+                <p class="upload-area__text">Нажми сюда или перетащи картинку</p>
+                <p class="upload-area__hint">Можно загрузить сразу несколько файлов</p>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+            </div>
+
+            <!-- Галерея -->
+            <div class="gallery" id="gallery"></div>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Мой Блог. Сделано с любовью к коду.</p>
+        </div>
+    </footer>
+
+    <!-- ===== ЛАЙТБОКС ===== -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+        <button class="lightbox__close" id="lightboxClose" aria-label="Закрыть">✕</button>
+        <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Предыдущая">‹</button>
+        <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Следующая">›</button>
+
+        <figure class="lightbox__content">
+            <img id="lightboxImage" src="" alt="">
+            <figcaption class="lightbox__caption" id="lightboxCaption"></figcaption>
+        </figure>
     </div>
 
-    <!-- Тут будут жить картинки -->
-    <div class="gallery" id="gallery"></div>
-    
     <script>
-        // 1. Находим все нужные элементы на странице
+        // ====== ЛОГИКА ГАЛЕРЕИ ======
         const gallery = document.getElementById('gallery');
         const fileInput = document.getElementById('fileInput');
         const dropArea = document.getElementById('dropArea');
 
-        // 2. Включаем хранилище: достаем старые картинки или создаем новую пустую папку
         let imagesArray = JSON.parse(localStorage.getItem('myGallery')) || [];
 
-        // 3. Функция, которая рисует галерею на экране
         function renderGallery() {
-            gallery.innerHTML = ''; // Очищаем экран перед отрисовкой
+            gallery.innerHTML = '';
 
             if (imagesArray.length === 0) {
-                gallery.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Пока здесь пусто, загрузи первую картинку!</p>';
+                gallery.innerHTML = `
+                    <p class="gallery__empty">
+                        Пока здесь пусто — загрузи первую картинку!
+                    </p>`;
                 return;
             }
 
             imagesArray.forEach((imageDataUrl, index) => {
-                // Создаем контейнер для картинки
                 const card = document.createElement('div');
-                card.classList.add('card');
-                
-                // Вставляем саму картинку
+                card.className = 'gallery-card';
+
                 const img = document.createElement('img');
                 img.src = imageDataUrl;
                 img.alt = `Фото ${index + 1}`;
-                
-                // Создаем кнопку удаления
+                img.loading = 'lazy';
+
+                // Открытие лайтбокса по клику
+                img.addEventListener('click', () => openLightbox(index));
+
                 const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Удалить';
-                deleteBtn.classList.add('delete-btn');
-                deleteBtn.onclick = () => deleteImage(index); // При нажатии удаляем эту картинку
-                
+                deleteBtn.textContent = '✕';
+                deleteBtn.className = 'gallery-card__delete';
+                deleteBtn.title = 'Удалить';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation(); // чтобы не сработал лайтбокс
+                    deleteImage(index);
+                };
+
                 card.appendChild(img);
                 card.appendChild(deleteBtn);
                 gallery.appendChild(card);
             });
         }
 
-        // 4. Функция для сохранения галереи в памяти браузера
         function saveGallery() {
             localStorage.setItem('myGallery', JSON.stringify(imagesArray));
-            renderGallery(); // Перерисовываем экран
+            renderGallery();
         }
 
-        // 5. Функция для удаления картинки
         function deleteImage(index) {
-            imagesArray.splice(index, 1); // Удаляем 1 элемент по индексу
-            saveGallery(); // Сохраняем изменения
+            if (!confirm('Удалить эту картинку?')) return;
+            imagesArray.splice(index, 1);
+            saveGallery();
         }
 
-        // 6. Функция, которая обрабатывает загрузку новых файлов
         function handleFiles(files) {
             Array.from(files).forEach(file => {
-                // Проверяем, что это точно картинка (небольшая защита)
                 if (!file.type.startsWith('image/')) return;
 
                 const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    // Когда картинка "прочитана", добавляем её в массив
+                reader.onload = (event) => {
                     imagesArray.push(event.target.result);
-                    saveGallery(); // Сохраняем всю галерею
+                    saveGallery();
                 };
-                
-                reader.readAsDataURL(file); // Начинаем чтение файла
+                reader.readAsDataURL(file);
             });
         }
 
-        // 7. Навешиваем обработчики событий (слушатели)
-        // Клик по области загрузки
         dropArea.addEventListener('click', () => fileInput.click());
-
-        // Выбор файла через окно выбора
         fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
-        // Drag-and-drop: чтобы было совсем как в крутых сервисах
         dropArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            dropArea.style.background = '#eef5ff';
+            dropArea.classList.add('is-dragover');
         });
-
         dropArea.addEventListener('dragleave', () => {
-            dropArea.style.background = '#fff';
+            dropArea.classList.remove('is-dragover');
         });
-
         dropArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropArea.style.background = '#fff';
+            dropArea.classList.remove('is-dragover');
             handleFiles(e.dataTransfer.files);
         });
 
-        // 8. При загрузке страницы показываем то, что уже есть в localStorage
+        // ====== ЛОГИКА ЛАЙТБОКСА ======
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            lightbox.classList.add('is-open');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden'; // блокируем скролл
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('is-open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightbox() {
+            const total = imagesArray.length;
+            lightboxImage.src = imagesArray[currentIndex];
+            lightboxImage.alt = `Фото ${currentIndex + 1}`;
+            lightboxCaption.textContent = `${currentIndex + 1} из ${total}`;
+
+            // Скрываем стрелки, если картинка всего одна
+            const single = total <= 1;
+            lightboxPrev.style.display = single ? 'none' : 'flex';
+            lightboxNext.style.display = single ? 'none' : 'flex';
+        }
+
+        function showPrev() {
+            currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
+            updateLightbox();
+        }
+
+        function showNext() {
+            currentIndex = (currentIndex + 1) % imagesArray.length;
+            updateLightbox();
+        }
+
+        // Обработчики
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', showPrev);
+        lightboxNext.addEventListener('click', showNext);
+
+        // Клик по фону закрывает лайтбокс
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Управление с клавиатуры
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('is-open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'ArrowRight') showNext();
+        });
+
+        // Свайпы для мобильных
+        let touchStartX = 0;
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        lightbox.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) showNext();
+                else showPrev();
+            }
+        });
+
         renderGallery();
     </script>
+
 </body>
 </html>
