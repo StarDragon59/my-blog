@@ -1,234 +1,447 @@
-/* 1. Сброс базовых отступов */
+/* ============================================
+   ПЕРЕМЕННЫЕ И БАЗА
+============================================ */
+:root {
+    --bg: #f5f7fa;
+    --bg-card: #ffffff;
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a4a5a;
+    --text-muted: #8a8a9a;
+    --accent: #667eea;
+    --accent-hover: #5568d3;
+    --border: #e8ecf1;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.10);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --transition: 0.25s ease;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* 2. Общие стили для всей страницы */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f9;
-    padding: 20px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;  /* чтобы градиент тянулся на всю высоту */
-}
-
-/* 3. Ограничиваем ширину контента */
-main {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* 4. Заголовки */
-h1, h2, h3 {
-    margin-bottom: 20px;
-    color: #2c3e50;
-}
-
-/* 5. Текст и списки */
-p {
-    margin-bottom: 15px;
-}
-
-ul {
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-/* 6. Изображения */
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin: 20px 0;
-}
-
-/* 7. Шапка и навигация */
-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #3498db;
-    margin: 0 10px;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* 8. Подвал */
-footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 0.9em;
-    color: #777;
-}
-
-/* 9. Мета-информация */
-.meta {
-    font-size: 0.9em;
-    color: #888;
-    margin-bottom: 20px;
-}
-
-/* 10. Карточка поста (основной блок) */
-.post-card {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
-    border-bottom: 1px solid #eee;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
 }
 
-.post-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border-color: #3498db;
-}
-
-.post-image {
+.container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px;
     width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
 }
 
-.post-card:hover .post-image {
-    filter: brightness(1.05);
-    transition: filter 0.3s ease;
+/* ============================================
+   ШАПКА САЙТА
+============================================ */
+.site-header {
+    background: var(--bg-card);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 16px 0;
 }
 
-.post-content {
-    padding: 20px 0;
+.site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
-.read-more {
-    display: inline-block;
-    margin-top: 10px;
-    color: #3498db;
+.site-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.site-nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.site-nav a {
     text-decoration: none;
-    font-weight: bold;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 40px;
+    transition: all var(--transition);
 }
+
+.site-nav a:hover {
+    background: rgba(102, 126, 234, 0.08);
+    color: var(--accent);
+}
+
+.site-nav a.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ============================================
+   ОСНОВНОЙ КОНТЕНТ
+============================================ */
+main.container {
+    padding-top: 32px;
+    padding-bottom: 48px;
+    flex: 1;
+}
+
+/* ============================================
+   🐱 БЛОК СО СЛУЧАЙНЫМ КОТИКОМ
+============================================ */
+.cat-block {
+    margin-bottom: 32px;
+}
+
+.cat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.cat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.cat-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+}
+
+.cat-card__emoji {
+    font-size: 1.3rem;
+}
+
+.cat-card__title {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.cat-card__image-wrapper {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #eef1f5;
+    overflow: hidden;
+}
+
+.cat-card__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.cat-card:hover .cat-card__image-wrapper img {
+    transform: scale(1.03);
+}
+
+.cat-card .btn {
+    margin: 16px 22px 22px;
+}
+
+/* ============================================
+   СТАТЬЯ (ПОСТ)
+============================================ */
+.post {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 36px 32px;
+    margin-bottom: 32px;
+}
+
+.post__header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.post__title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.meta {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.content p {
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+}
+
+.content h3 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin: 24px 0 12px;
+    font-weight: 700;
+}
+
+.content a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+    transition: border-color var(--transition);
+}
+
+.content a:hover {
+    border-bottom-color: var(--accent);
+}
+
 .center-image {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    margin: 24px auto;
+    box-shadow: var(--shadow-sm);
 }
 
-.social-links {
+/* Список с галочками */
+.checklist {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.checklist li {
+    padding: 8px 0 8px 32px;
+    position: relative;
+    font-size: 1.05rem;
+}
+
+.checklist li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
     display: flex;
-    gap: 15px;
+    align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    font-size: 0.75rem;
+    font-weight: bold;
 }
 
-.social-links a {
-    text-decoration: none;
-    color: #3498db;
-    padding: 10px 20px;
-    border: 2px solid #3498db;
-    border-radius: 30px;
-    transition: 0.3s;
+.post__footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
 }
 
-.social-links a:hover {
-    background: #3498db;
-    color: white;
-}
-.game-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 28px;
-    padding: 32px 24px;
-    text-align: center;
-    max-width: 500px;
-    width: 100%;
-    margin: 0 auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+.post__tags {
+    font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
-/* Заголовок игры */
-.game-container h1 {
-    color: #2c3e50;
-    font-size: 2em;
+/* ============================================
+   😂 КАРТОЧКА СО ШУТКОЙ
+============================================ */
+.joke-block {
     margin-bottom: 16px;
 }
 
-/* Текст игры */
-.game-container p {
-    color: #555;
-    margin-bottom: 28px;
+.joke-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 28px 26px 26px;
+    color: #fff;
+    transition: transform var(--transition), box-shadow var(--transition);
 }
 
-/* Кнопка игры */
-.game-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
+.joke-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.joke-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+.joke-card__emoji {
+    font-size: 1.3rem;
+}
+
+.joke-card__title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.joke-card__text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    min-height: 60px;
+}
+
+.joke-card .btn {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--accent);
     border: none;
-    padding: 14px 28px;
-    font-size: 18px;
-    border-radius: 60px;
+}
+
+.joke-card .btn:hover {
+    background: #fff;
+    color: var(--accent-hover);
+}
+
+/* ============================================
+   КНОПКИ
+============================================ */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
+    text-decoration: none;
+    transition: all var(--transition);
+    border: none;
+    font-family: inherit;
 }
 
-.game-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+.btn--primary {
+    background: var(--accent);
+    color: #fff;
 }
 
-.game-btn:active {
+.btn--primary:hover {
+    background: var(--accent-hover);
+    transform: scale(1.03);
+}
+
+.btn--primary:active {
     transform: scale(0.98);
 }
 
-/* Мобильная адаптация для игры */
+.btn--ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+}
+
+.btn--ghost:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ============================================
+   ПОДВАЛ
+============================================ */
+.site-footer {
+    background: #1a1a2e;
+    color: #b0b8c4;
+    text-align: center;
+    padding: 28px 0;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+============================================ */
 @media (max-width: 768px) {
-    .game-container {
+    .site-header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .site-nav a {
+        padding: 5px 12px;
+        font-size: 0.9rem;
+    }
+
+    .post {
         padding: 24px 20px;
-        border-radius: 20px;
     }
-    
-    .game-container h1 {
-        font-size: 1.6em;
+
+    .post__title {
+        font-size: 1.5rem;
     }
-    
-    .game-btn {
-        width: 100%;
-        padding: 14px 20px;
-        font-size: 16px;
+
+    .cat-card__image-wrapper {
+        aspect-ratio: 3 / 2;
     }
-}
-/* Мобильная адаптация для всего сайта */
-@media (max-width: 768px) {
-    body {
-        padding: 12px;
+
+    .joke-card {
+        padding: 24px 20px;
     }
-    
-    main {
-        padding: 20px;
-    }
-    
-    h1 {
-        font-size: 1.6em;
-    }
-    
-    nav a {
-        display: inline-block;
-        margin: 5px 8px;
+
+    .joke-card__text {
+        font-size: 1.1rem;
     }
 }
+
+@media (max-width: 480px) {
+    .site-title {
+        font-size: 1.2rem;
+    }
+
+    .post__title {
+        font-size: 1.3rem;
+    }
+
+    .content p,
+    .checklist li {
+        font-size: 1rem;
+    }
+}
+
+/* Плавное появление при загрузке */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.cat-block,
+.post,
+.joke-block {
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.post       { animation-delay: 0.1s; }
+.joke-block { animation-delay: 0.2s; }
